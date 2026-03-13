@@ -35,7 +35,7 @@ test:
 	echo "--- POST /sobreviventes ---" && \
 	curl -s -X POST "$$API_URL/sobreviventes" \
 	  -H "Content-Type: application/json" \
-	  -d '{"passengers":[{"id":"01","pclass":1,"sex":"female","age":29,"sibsp":0,"parch":0,"fare":211.3,"embarked":"C"}]}' | jq . && \
+	  -d '{"passengers":[{"id":"01","pclass":1,"sex":"female","age":29,"sibsp":0,"parch":0,"fare":211.3,"embarked":"Q"}]}' | jq . && \
 	echo "--- GET /sobreviventes ---" && \
 	curl -s "$$API_URL/sobreviventes" | jq . && \
 	echo "--- GET /sobreviventes/01 ---" && \

@@ -87,12 +87,14 @@ curl -X DELETE "http://localhost:5555/sobreviventes?id=01" \
 
 ## Endpoints
 
+> URL TEMPORARIA: https://9heuksboob.execute-api.us-east-2.amazonaws.com/dev/sobreviventes
+
 | Método | Path | Descrição |
 |---|---|---|
 | `POST` | `/sobreviventes` | Escorar um ou mais passageiros |
 | `GET` | `/sobreviventes` | Listar todos os passageiros avaliados |
-| `GET` | `/sobreviventes?id={id}` | Consultar passageiro por ID |
-| `DELETE` | `/sobreviventes?id={id}` | Remover passageiro |
+| `GET` | `/sobreviventes?{id}` | Consultar passageiro por ID |
+| `DELETE` | `/sobreviventes?{id}` | Remover passageiro |
 
 ### Exemplo de request (POST)
 
@@ -107,7 +109,7 @@ curl -X DELETE "http://localhost:5555/sobreviventes?id=01" \
       "sibsp": 1,
       "parch": 0,
       "fare": 7.25,
-      "embarked": "S"
+      "embarked": "Q"
     }
   ]
 }
