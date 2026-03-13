@@ -87,7 +87,7 @@ curl -X DELETE "http://localhost:5555/sobreviventes?id=01" \
 
 ## Endpoints
 
-> URL TEMPORARIA: https://9heuksboob.execute-api.us-east-2.amazonaws.com/dev/sobreviventes
+> URL Temporária: https://9heuksboob.execute-api.us-east-2.amazonaws.com/dev/sobreviventes
 
 | Método | Path | Descrição |
 |---|---|---|
