@@ -1,0 +1,290 @@
+openapi: "3.0.1"
+info:
+  title: Titanic Survival API
+  description: |
+    API para escorar passageiros do Titanic usando modelo de Machine Learning.
+    Armazena resultados no DynamoDB e expõe endpoints de consulta e exclusão.
+  version: "1.0.0"
+
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+
+paths:
+
+  /sobreviventes:
+    post:
+      summary: Escorar passageiro(s)
+      description: |
+        Recebe um array de passageiros, aplica o modelo de ML e retorna
+        a probabilidade de sobrevivência de cada um. Os resultados são
+        persistidos no DynamoDB.
+      x-amazon-apigateway-request-validator: all
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PassengerListRequest"
+            example:
+              passengers:
+                - id: "p-001"
+                  pclass: 3
+                  sex: male
+                  age: 22
+                  sibsp: 1
+                  parch: 0
+                  fare: 7.25
+                  embarked: S
+      responses:
+        "200":
+          description: Predições realizadas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PredictionResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalError"
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: ${lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+
+    get:
+      summary: Listar passageiros avaliados
+      description: |
+        Retorna a lista de todos os passageiros que já foram avaliados pelo modelo.
+        Suporta paginação via query params `limit` e `last_key`.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+          description: Número máximo de registros a retornar
+        - name: last_key
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Chave do último item da página anterior (para paginação)
+      responses:
+        "200":
+          description: Lista de passageiros avaliados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PassengerListResponse"
+        "500":
+          $ref: "#/components/responses/InternalError"
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: ${lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+
+  /sobreviventes/{id}:
+    get:
+      summary: Consultar passageiro por ID
+      description: Retorna a probabilidade de sobrevivência de um passageiro específico.
+      parameters:
+        - $ref: "#/components/parameters/PassengerId"
+      responses:
+        "200":
+          description: Dados do passageiro
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PassengerResult"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: ${lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+
+    delete:
+      summary: Deletar passageiro
+      description: Remove o registro de um passageiro do banco de dados.
+      parameters:
+        - $ref: "#/components/parameters/PassengerId"
+      responses:
+        "200":
+          description: Passageiro deletado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        httpMethod: POST
+        uri: ${lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+
+components:
+  parameters:
+    PassengerId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: ID único do passageiro
+
+  schemas:
+    Passenger:
+      type: object
+      required: [pclass, sex, age]
+      properties:
+        id:
+          type: string
+          description: ID do passageiro (opcional — gerado automaticamente se omitido)
+          example: "p-001"
+        pclass:
+          type: integer
+          enum: [1, 2, 3]
+          description: Classe da passagem
+        sex:
+          type: string
+          enum: [male, female]
+          description: Sexo do passageiro
+        age:
+          type: number
+          format: float
+          minimum: 0
+          description: Idade em anos
+        sibsp:
+          type: integer
+          minimum: 0
+          description: Nº de irmãos/cônjuge a bordo
+          default: 0
+        parch:
+          type: integer
+          minimum: 0
+          description: Nº de pais/filhos a bordo
+          default: 0
+        fare:
+          type: number
+          format: float
+          minimum: 0
+          description: Valor pago pela passagem
+          default: 32.2
+        embarked:
+          type: string
+          enum: [S, C, Q]
+          description: Porto de embarque (S=Southampton, C=Cherbourg, Q=Queenstown)
+          default: S
+
+    PassengerListRequest:
+      type: object
+      required: [passengers]
+      properties:
+        passengers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Passenger"
+          minItems: 1
+
+    PassengerResult:
+      type: object
+      properties:
+        id:
+          type: string
+        survival_probability:
+          type: number
+          format: float
+          description: Probabilidade de sobrevivência entre 0 e 1
+        survived:
+          type: boolean
+          description: true se probabilidade >= 0.5
+        pclass:
+          type: integer
+        sex:
+          type: string
+        age:
+          type: number
+        sibsp:
+          type: integer
+        parch:
+          type: integer
+        fare:
+          type: number
+        embarked:
+          type: string
+
+    PredictionResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              survival_probability:
+                type: number
+              survived:
+                type: boolean
+
+    PassengerListResponse:
+      type: object
+      properties:
+        passengers:
+          type: array
+          items:
+            $ref: "#/components/schemas/PassengerResult"
+        count:
+          type: integer
+        next_key:
+          type: string
+          description: Presente quando há mais páginas disponíveis
+
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+
+  responses:
+    BadRequest:
+      description: Requisição inválida
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    NotFound:
+      description: Passageiro não encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    InternalError:
+      description: Erro interno do servidor
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string

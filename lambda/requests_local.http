@@ -1,0 +1,207 @@
+#-------------------
+# TESTES LOCAIS
+#====================
+
+### POST /sobreviventes
+POST http://localhost:5555/sobreviventes
+Content-Type: application/json
+
+{
+   "resource":"/sobreviventes",
+   "path":"/sobreviventes",
+   "httpMethod":"POST",
+   "headers":null,
+   "multiValueHeaders":null,
+   "queryStringParameters":null,
+   "multiValueQueryStringParameters":null,
+   "pathParameters":null,
+   "stageVariables":null,
+   "requestContext":{
+      "resourceId":"4h53rk",
+      "resourcePath":"/sobreviventes",
+      "httpMethod":"POST",
+      "extendedRequestId":"aInhsGLciYcFYBg=",
+      "requestTime":"12/Mar/2026:23:57:11 +0000",
+      "path":"/sobreviventes",
+      "accountId":"981857662179",
+      "protocol":"HTTP/1.1",
+      "stage":"test-invoke-stage",
+      "domainPrefix":"testPrefix",
+      "requestTimeEpoch":1773359831252,
+      "requestId":"44ac66f3-6d00-4bff-a5dc-c7d81d3e531a",
+      "identity":{
+         "cognitoIdentityPoolId":null,
+         "cognitoIdentityId":null,
+         "apiKey":"test-invoke-api-key",
+         "principalOrgId":null,
+         "cognitoAuthenticationType":null,
+         "userArn":"arn:aws:iam::981857662179:root",
+         "apiKeyId":"test-invoke-api-key-id",
+         "userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+         "accountId":"981857662179",
+         "caller":"981857662179",
+         "sourceIp":"test-invoke-source-ip",
+         "accessKey":"ASIA6JG2G6TRWB62GR2R",
+         "cognitoAuthenticationProvider":null,
+         "user":"981857662179"
+      },
+      "domainName":"testPrefix.testDomainName",
+      "apiId":"23vygydqw8"
+   },
+   "body":"{\"passengers\": [{\"id\":"01",\"pclass\": 1,\"sex\": \"male\",\"age\": 29,\"sibsp\": 0,\"parch\": 0,\"fare\": 211.3,\"embarked\": \"C\"}]}",
+   "isBase64Encoded":false
+}
+
+### GET /sobreviventes
+GET http://localhost:5555/sobreviventes
+Content-Type: application/json
+
+{
+   "resource":"/sobreviventes",
+   "path":"/sobreviventes",
+   "httpMethod":"GET",
+   "headers":null,
+   "multiValueHeaders":null,
+   "queryStringParameters":null,
+   "multiValueQueryStringParameters":null,
+   "pathParameters":null,
+   "stageVariables":null,
+   "requestContext":{
+      "resourceId":"4h53rk",
+      "resourcePath":"/sobreviventes",
+      "httpMethod":"GET",
+      "extendedRequestId":"aJBrjFo0iYcFmpA=",
+      "requestTime":"13/Mar/2026:02:55:43 +0000",
+      "path":"/sobreviventes",
+      "accountId":"981857662179",
+      "protocol":"HTTP/1.1",
+      "stage":"test-invoke-stage",
+      "domainPrefix":"testPrefix",
+      "requestTimeEpoch":1773370543990,
+      "requestId":"d126f06e-5e76-4411-98f8-4f2a6b0975e0",
+      "identity":{
+         "cognitoIdentityPoolId":null,
+         "cognitoIdentityId":null,
+         "apiKey":"test-invoke-api-key",
+         "principalOrgId":null,
+         "cognitoAuthenticationType":null,
+         "userArn":"arn:aws:iam::981857662179:root",
+         "apiKeyId":"test-invoke-api-key-id",
+         "userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+         "accountId":"981857662179",
+         "caller":"981857662179",
+         "sourceIp":"test-invoke-source-ip",
+         "accessKey":"ASIA6JG2G6TRTIZI53OU",
+         "cognitoAuthenticationProvider":null,
+         "user":"981857662179"
+      },
+      "domainName":"testPrefix.testDomainName",
+      "apiId":"23vygydqw8"
+   },
+   "body":null,
+   "isBase64Encoded":false
+}
+
+### GET /sobreviventes/01
+GET http://localhost:5555/sobreviventes?id=70
+Content-Type: application/json
+
+{
+   "resource":"/sobreviventes/{id}",
+   "path":"/sobreviventes/10",
+   "httpMethod":"GET",
+   "headers":null,
+   "multiValueHeaders":null,
+   "queryStringParameters":null,
+   "multiValueQueryStringParameters":null,
+   "pathParameters":{
+      "id":"70"
+   },
+   "stageVariables":null,
+   "requestContext":{
+      "resourceId":"bbu7lw",
+      "resourcePath":"/sobreviventes/{id}",
+      "httpMethod":"GET",
+      "extendedRequestId":"aJF_mH5kiYcF99w=",
+      "requestTime":"13/Mar/2026:03:25:10 +0000",
+      "path":"/sobreviventes/{id}",
+      "accountId":"981857662179",
+      "protocol":"HTTP/1.1",
+      "stage":"test-invoke-stage",
+      "domainPrefix":"testPrefix",
+      "requestTimeEpoch":1773372310623,
+      "requestId":"4d036ba8-8943-4ed8-9a27-5191a7a1cf20",
+      "identity":{
+         "cognitoIdentityPoolId":null,
+         "cognitoIdentityId":null,
+         "apiKey":"test-invoke-api-key",
+         "principalOrgId":null,
+         "cognitoAuthenticationType":null,
+         "userArn":"arn:aws:iam::981857662179:root",
+         "apiKeyId":"test-invoke-api-key-id",
+         "userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+         "accountId":"981857662179",
+         "caller":"981857662179",
+         "sourceIp":"test-invoke-source-ip",
+         "accessKey":"ASIA6JG2G6TR3RYHA7ZI",
+         "cognitoAuthenticationProvider":null,
+         "user":"981857662179"
+      },
+      "domainName":"testPrefix.testDomainName",
+      "apiId":"23vygydqw8"
+   },
+   "body":null,
+   "isBase64Encoded":false
+}
+
+### DELETE /sobreviventes/01
+DELETE http://localhost:5555/sobreviventes?id=70
+Content-Type: application/json
+
+{
+   "resource":"/sobreviventes/{id}",
+   "path":"/sobreviventes/10",
+   "httpMethod":"DELETE",
+   "headers":null,
+   "multiValueHeaders":null,
+   "queryStringParameters":null,
+   "multiValueQueryStringParameters":null,
+   "pathParameters":{
+      "id":"70"
+   },
+   "stageVariables":null,
+   "requestContext":{
+      "resourceId":"bbu7lw",
+      "resourcePath":"/sobreviventes/{id}",
+      "httpMethod":"DELETE",
+      "extendedRequestId":"aJIlpFnJCYcF6QA=",
+      "requestTime":"13/Mar/2026:03:42:53 +0000",
+      "path":"/sobreviventes/{id}",
+      "accountId":"981857662179",
+      "protocol":"HTTP/1.1",
+      "stage":"test-invoke-stage",
+      "domainPrefix":"testPrefix",
+      "requestTimeEpoch":1773373373320,
+      "requestId":"f84aa40b-bd68-46aa-b173-146e132e5139",
+      "identity":{
+         "cognitoIdentityPoolId":null,
+         "cognitoIdentityId":null,
+         "apiKey":"test-invoke-api-key",
+         "principalOrgId":null,
+         "cognitoAuthenticationType":null,
+         "userArn":"arn:aws:iam::981857662179:root",
+         "apiKeyId":"test-invoke-api-key-id",
+         "userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",
+         "accountId":"981857662179",
+         "caller":"981857662179",
+         "sourceIp":"test-invoke-source-ip",
+         "accessKey":"ASIA6JG2G6TRW4RRLY7N",
+         "cognitoAuthenticationProvider":null,
+         "user":"981857662179"
+      },
+      "domainName":"testPrefix.testDomainName",
+      "apiId":"23vygydqw8"
+   },
+   "body":null,
+   "isBase64Encoded":false
+}
