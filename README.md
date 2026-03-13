@@ -11,7 +11,7 @@ API serverless para predição de sobrevivência de passageiros do Titanic, usan
 ### 1. Clone o repositório
 
 ```bash
-git clone <seu-repo>
+git clone <repo>
 ```
 
 ### 2. Configure as credenciais AWS
