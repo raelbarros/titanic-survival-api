@@ -4,7 +4,7 @@ API serverless para predição de sobrevivência de passageiros do Titanic, usan
 
 ## Arquitetura
 
-![doc](image.png)
+![doc](doc.png)
 
 ## Deploy
 
