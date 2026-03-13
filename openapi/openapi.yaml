@@ -6,10 +6,6 @@ info:
     Armazena resultados no DynamoDB e expõe endpoints de consulta e exclusão.
   version: "1.0.0"
 
-x-amazon-apigateway-request-validators:
-  all:
-    validateRequestBody: true
-    validateRequestParameters: true
 
 paths:
 
@@ -20,7 +16,7 @@ paths:
         Recebe um array de passageiros, aplica o modelo de ML e retorna
         a probabilidade de sobrevivência de cada um. Os resultados são
         persistidos no DynamoDB.
-      x-amazon-apigateway-request-validator: all
+
       requestBody:
         required: true
         content:
@@ -29,14 +25,14 @@ paths:
               $ref: "#/components/schemas/PassengerListRequest"
             example:
               passengers:
-                - id: "p-001"
+                - id: "01"
                   pclass: 3
                   sex: male
                   age: 22
                   sibsp: 1
                   parch: 0
                   fare: 7.25
-                  embarked: S
+                  embarked: Q
       responses:
         "200":
           description: Predições realizadas com sucesso
@@ -48,33 +44,11 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "500":
           $ref: "#/components/responses/InternalError"
-      x-amazon-apigateway-integration:
-        type: aws_proxy
-        httpMethod: POST
-        uri: ${lambda_invoke_arn}
-        passthroughBehavior: when_no_match
 
     get:
       summary: Listar passageiros avaliados
       description: |
         Retorna a lista de todos os passageiros que já foram avaliados pelo modelo.
-        Suporta paginação via query params `limit` e `last_key`.
-      parameters:
-        - name: limit
-          in: query
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-            maximum: 100
-          description: Número máximo de registros a retornar
-        - name: last_key
-          in: query
-          required: false
-          schema:
-            type: string
-          description: Chave do último item da página anterior (para paginação)
       responses:
         "200":
           description: Lista de passageiros avaliados
@@ -84,11 +58,6 @@ paths:
                 $ref: "#/components/schemas/PassengerListResponse"
         "500":
           $ref: "#/components/responses/InternalError"
-      x-amazon-apigateway-integration:
-        type: aws_proxy
-        httpMethod: POST
-        uri: ${lambda_invoke_arn}
-        passthroughBehavior: when_no_match
 
   /sobreviventes/{id}:
     get:
@@ -107,11 +76,6 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalError"
-      x-amazon-apigateway-integration:
-        type: aws_proxy
-        httpMethod: POST
-        uri: ${lambda_invoke_arn}
-        passthroughBehavior: when_no_match
 
     delete:
       summary: Deletar passageiro
@@ -129,11 +93,6 @@ paths:
           $ref: "#/components/responses/NotFound"
         "500":
           $ref: "#/components/responses/InternalError"
-      x-amazon-apigateway-integration:
-        type: aws_proxy
-        httpMethod: POST
-        uri: ${lambda_invoke_arn}
-        passthroughBehavior: when_no_match
 
 components:
   parameters:
@@ -153,7 +112,7 @@ components:
         id:
           type: string
           description: ID do passageiro (opcional — gerado automaticamente se omitido)
-          example: "p-001"
+          example: "01"
         pclass:
           type: integer
           enum: [1, 2, 3]
@@ -204,13 +163,14 @@ components:
       properties:
         id:
           type: string
-        survival_probability:
+        survived:
+          type: number
+          format: int 
+          description: 1 se probabilidade >= 0.5
+        predict_proba:
           type: number
           format: float
           description: Probabilidade de sobrevivência entre 0 e 1
-        survived:
-          type: boolean
-          description: true se probabilidade >= 0.5
         pclass:
           type: integer
         sex:
@@ -236,10 +196,10 @@ components:
             properties:
               id:
                 type: string
-              survival_probability:
-                type: number
               survived:
-                type: boolean
+                type: number
+              predict_proba:
+                type: number
 
     PassengerListResponse:
       type: object
@@ -248,11 +208,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PassengerResult"
-        count:
-          type: integer
-        next_key:
-          type: string
-          description: Presente quando há mais páginas disponíveis
 
     DeleteResponse:
       type: object
@@ -268,7 +223,7 @@ components:
           schema:
             type: object
             properties:
-              error:
+              message:
                 type: string
     NotFound:
       description: Passageiro não encontrado
@@ -277,7 +232,7 @@ components:
           schema:
             type: object
             properties:
-              error:
+              message:
                 type: string
     InternalError:
       description: Erro interno do servidor
@@ -286,5 +241,5 @@ components:
           schema:
             type: object
             properties:
-              error:
+              message:
                 type: string

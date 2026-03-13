@@ -63,7 +63,7 @@ curl "http://localhost:5555/sobreviventes" \
   }'
 
 # Listar pode ID
-curl "http://localhost:5555/sobreviventes?id=01" \
+curl "http://localhost:5555/sobreviventes/01" \
   -H "Content-Type: application/json" \
   -d '{
    "path":"/sobreviventes/10",
@@ -74,7 +74,7 @@ curl "http://localhost:5555/sobreviventes?id=01" \
   }'
 
 # Deletar passageiro
-curl -X DELETE "http://localhost:5555/sobreviventes?id=01" \
+curl -X DELETE "http://localhost:5555/sobreviventes/01" \
   -H "Content-Type: application/json" \
   -d '{
    "path":"/sobreviventes/10",
@@ -93,8 +93,8 @@ curl -X DELETE "http://localhost:5555/sobreviventes?id=01" \
 |---|---|---|
 | `POST` | `/sobreviventes` | Escorar um ou mais passageiros |
 | `GET` | `/sobreviventes` | Listar todos os passageiros avaliados |
-| `GET` | `/sobreviventes?{id}` | Consultar passageiro por ID |
-| `DELETE` | `/sobreviventes?{id}` | Remover passageiro |
+| `GET` | `/sobreviventes/{id}` | Consultar passageiro por ID |
+| `DELETE` | `/sobreviventes/{id}` | Remover passageiro |
 
 ### Exemplo de request (POST)
 
