@@ -10,7 +10,7 @@ output "lambda_function_name" {
 
 output "dynamodb_table_name" {
   description = "Nome da tabela DynamoDB"
-  value       = aws_dynamodb_table.passengers.name
+  value       = aws_dynamodb_table.database.name
 }
 
 output "model_bucket_name" {

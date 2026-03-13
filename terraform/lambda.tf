@@ -12,7 +12,7 @@ resource "aws_lambda_function" "titanic" {
 
   environment {
     variables = {
-      DYNAMODB_TABLE = aws_dynamodb_table.passengers.name
+      DYNAMODB_TABLE = aws_dynamodb_table.database.name
       MODEL_BUCKET   = aws_s3_bucket.model.id
       MODEL_KEY      = "model.pkl"
     }
