@@ -145,7 +145,7 @@ def get_saved_data_by_id(p_id: str):
             logger.warning(f"Registro não encontrado | id={p_id}")
             return _response(404, {"message": f"Registro '{p_id}' não encontrado"})
 
-        logger.success("Registro encontrado | id={p_id}", )
+        logger.success(f"Registro encontrado | id={p_id}")
         return _response(200, _normalize_item(item))
 
     except Exception as e:
